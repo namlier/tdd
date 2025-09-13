@@ -10,6 +10,10 @@ final class Greeter
     {
         $greetWord = $greetWord ?? 'World';
 
+        if (mb_strlen($greetWord) > 16) {
+            throw new \Exception('Greet word is too long!');
+        }
+
         return "Hello {$greetWord}!";
     }
 }
