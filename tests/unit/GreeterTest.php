@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Namlier\UnitTesting\Greeter;
 
 class GreeterTest extends TestCase
@@ -50,5 +51,29 @@ class GreeterTest extends TestCase
         $result = $sut->greet($stringOf16Letters);
 
         self::assertEquals("Hello 1234567890abcdef!", $result);
+    }
+
+    #[DataProvider('profaneWords')]
+    public function testGreetWillThrowExceptionIfProfaneWordAsGreetWordProvided(array $profaneWords): void
+    {
+        $sut = new Greeter();
+
+        foreach ($profaneWords as $profaneWord) {
+            self::expectException(\Exception::class);
+            self::expectExceptionMessage('Profane words are forbidden!');
+
+            $sut->greet($profaneWord);
+        }
+    }
+
+    public static function profaneWords(): array
+    {
+        $profaneWordsNouns = ['crap', 'darn', 'lousy', 'fool', 'idiot', 'loser', 'junk', 'moron'];
+        $profaneWordsVerbs = ['die', 'vanish', 'rot', 'crumble', 'decay', 'perish', 'break', 'burn', 'choke'];
+
+        return [
+            [$profaneWordsNouns],
+            [$profaneWordsVerbs]
+        ];
     }
 }
