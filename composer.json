@@ -12,6 +12,9 @@
             "email": "namliers@gmail.com"
         }
     ],
+    "require": {
+        "ext-mbstring": "*"
+    },
     "require-dev": {
         "phpunit/phpunit": "^12.3"
     }
