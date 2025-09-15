@@ -30,13 +30,7 @@ class PasswordValidatorTest extends TestCase
     {
         $sut = new PasswordValidator();
 
-        $goodPasswordArray = self::GOOD_PASSWORD_CHARACTERS_EXAMPLE;
-        $badPasswordArray = array_slice($goodPasswordArray, 0, 7);
-
-        if (count($badPasswordArray) >= 8) {
-            $this->fail('It is important for the test to have less than 8 symbols in provided password');
-        }
-
+        $badPasswordArray = array_slice(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, 0, 7);
         $notEnoughCharactersPassword = implode($badPasswordArray);
 
         self::expectException(\Exception::class);
@@ -49,11 +43,7 @@ class PasswordValidatorTest extends TestCase
     {
         $sut = new PasswordValidator();
 
-        $goodPasswordArray = self::GOOD_PASSWORD_CHARACTERS_EXAMPLE;
-        $badPasswordArray = array_filter($goodPasswordArray, fn ($value, $key) => $key !== 'uppercase', ARRAY_FILTER_USE_BOTH);
-        array_push($badPasswordArray, 'n');
-
-        $noUpperCasePassword = implode($badPasswordArray);
+        $noUpperCasePassword = $this->createPasswordWithoutAnyUppercaseChar();
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one uppercase character.');
@@ -65,11 +55,7 @@ class PasswordValidatorTest extends TestCase
     {
         $sut = new PasswordValidator();
 
-        $goodPasswordArray = self::GOOD_PASSWORD_CHARACTERS_EXAMPLE;
-        $badPasswordArray = array_filter($goodPasswordArray, fn ($value, $key) => $key !== 'lowercase', ARRAY_FILTER_USE_BOTH);
-        array_push($badPasswordArray, 'N');
-
-        $noLowerCasePassword = implode($badPasswordArray);
+        $noLowerCasePassword = $this->createPasswordWithoutAnyLowercaseCharProvided();
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one lowercase character.');
@@ -77,15 +63,11 @@ class PasswordValidatorTest extends TestCase
         $sut->isValid($noLowerCasePassword);
     }
 
-    public function testIsNotValidWhenNoAnyNumberProvided(): void
+    public function testIsNotValidWhenAnyNumberProvided(): void
     {
         $sut = new PasswordValidator();
 
-        $goodPasswordArray = self::GOOD_PASSWORD_CHARACTERS_EXAMPLE;
-        $badPasswordArray = array_slice($goodPasswordArray, 5);
-        array_push($badPasswordArray, 'q', 'w', 'e', 'r', 't ');
-
-        $noAnyNumberPassword = implode($badPasswordArray);
+        $noAnyNumberPassword = $this->createPasswordWithoutAnyNumber();
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one number.');
@@ -97,15 +79,71 @@ class PasswordValidatorTest extends TestCase
     {
         $sut = new PasswordValidator();
 
-        $goodPasswordArray = self::GOOD_PASSWORD_CHARACTERS_EXAMPLE;
-        $badPasswordArray = array_filter($goodPasswordArray, fn ($value, $key) => $key !== 'special_symbol', ARRAY_FILTER_USE_BOTH);
-        array_push($badPasswordArray, 'N');
-
-        $noAnySpecialSymbolPassword = implode($badPasswordArray);
+        $noAnySpecialSymbolPassword = $this->createPasswordWithoutSpecialSymbol();
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one special symbol from list "' . self::SPECIAL_SYMBOLS . '".');
 
         $sut->isValid($noAnySpecialSymbolPassword);
+    }
+
+    #[DataProvider('goodPasswordWithSpecialSymbol')]
+    public function testAnyOfSpecialSymbolLeadsToValidPassword(string $specialSymbol): void
+    {
+        $sut = new PasswordValidator();
+
+        $passwordArray = array_replace(
+            self::GOOD_PASSWORD_CHARACTERS_EXAMPLE,
+            ['special_symbol' => $specialSymbol]
+        );
+        $password = implode($passwordArray);
+
+        self::assertTrue(
+            $sut->isValid($password),
+            'It should be valid if this special symbol is used and all of the others conditions satisfied.'
+        );
+    }
+
+    public static function goodPasswordWithSpecialSymbol(): \Generator
+    {
+        $specialSymbols = str_split(self::SPECIAL_SYMBOLS);
+
+        foreach ($specialSymbols as $specialSymbol) {
+            $passwordArray = array_replace(
+                self::GOOD_PASSWORD_CHARACTERS_EXAMPLE,
+                ['special_symbol' => $specialSymbol]
+            );
+
+            yield [implode($passwordArray)];
+        }
+    }
+
+    private function createPasswordWithoutAnyUppercaseChar(): string
+    {
+        $withoutUppercasePasswordArray = array_replace(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, ['uppercase' => 'n']);
+
+        return implode($withoutUppercasePasswordArray);
+    }
+
+    private function createPasswordWithoutAnyLowercaseCharProvided(): string
+    {
+        $withoutLowercasePasswordArray = array_replace(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, ['lowercase' => 'N']);
+
+        return implode($withoutLowercasePasswordArray);
+    }
+
+    private function createPasswordWithoutAnyNumber(): string
+    {
+        $withoutNumberPasswordArray = array_slice(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, 5);
+        array_push($withoutNumberPasswordArray, 'q', 'w', 'e', 'r', 't ');
+
+        return implode($withoutNumberPasswordArray);
+    }
+
+    private function createPasswordWithoutSpecialSymbol(): string
+    {
+        $withoutSpecialSymbolPasswordArray = array_replace(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, ['special_symbol' => 'N']);
+
+        return implode($withoutSpecialSymbolPasswordArray);
     }
 }
