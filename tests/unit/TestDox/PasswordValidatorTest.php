@@ -89,7 +89,7 @@ class PasswordValidatorTest extends TestCase
     }
 
     #[DataProvider('goodPasswordWithSpecialSymbol')]
-    #[TestDox('It should be valid with "$usedSpecialSymbol" symbol')]
+    #[TestDox('It should be valid $_dataName')] // $_dataName is a name of the data set
     public function testAnyOfSpecialSymbolLeadsToValidPassword(string $specialSymbol, string $usedSpecialSymbol): void
     {
         $sut = new PasswordValidator();
@@ -110,13 +110,16 @@ class PasswordValidatorTest extends TestCase
     {
         $specialSymbols = str_split(self::SPECIAL_SYMBOLS);
 
+        $i = 1;
+
         foreach ($specialSymbols as $specialSymbol) {
             $passwordArray = array_replace(
                 self::GOOD_PASSWORD_CHARACTERS_EXAMPLE,
                 ['special_symbol' => $specialSymbol]
             );
 
-            yield [implode($passwordArray), $specialSymbol];
+            yield 'with symbol "' . $specialSymbol . '"' => [implode($passwordArray), $specialSymbol];
+            $i++;
         }
     }
 
