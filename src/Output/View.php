@@ -7,8 +7,8 @@ namespace Namlier\UnitTesting\Output;
 
 class View
 {
-    public function render(): void
+    public function render(string $mainTag = 'h1'): void
     {
-        echo '<h1>Welcome</h1>';
+        echo "<{$mainTag}>Welcome</{$mainTag}>";
     }
 }
