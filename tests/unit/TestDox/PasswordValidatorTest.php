@@ -6,6 +6,7 @@ namespace TestDox;
 
 use Namlier\UnitTesting\TestDox\PasswordValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 class PasswordValidatorTest extends TestCase
@@ -30,7 +31,7 @@ class PasswordValidatorTest extends TestCase
     {
         $sut = new PasswordValidator();
 
-        $badPasswordArray = array_slice(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, 0, 7);
+        $badPasswordArray = array_slice(self::GOOD_PASSWORD_CHARACTERS_EXAMPLE, 1, 7);
         $notEnoughCharactersPassword = implode($badPasswordArray);
 
         self::expectException(\Exception::class);
@@ -88,7 +89,8 @@ class PasswordValidatorTest extends TestCase
     }
 
     #[DataProvider('goodPasswordWithSpecialSymbol')]
-    public function testAnyOfSpecialSymbolLeadsToValidPassword(string $specialSymbol): void
+    #[TestDox('It should be valid with "$usedSpecialSymbol" symbol')]
+    public function testAnyOfSpecialSymbolLeadsToValidPassword(string $specialSymbol, string $usedSpecialSymbol): void
     {
         $sut = new PasswordValidator();
 
@@ -114,7 +116,7 @@ class PasswordValidatorTest extends TestCase
                 ['special_symbol' => $specialSymbol]
             );
 
-            yield [implode($passwordArray)];
+            yield [implode($passwordArray), $specialSymbol];
         }
     }
 
