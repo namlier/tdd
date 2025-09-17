@@ -14,7 +14,9 @@
     ],
     "require": {
         "ext-mbstring": "*",
-        "symfony/dependency-injection": "^7.3"
+        "ext-sqlite3": "*",
+        "symfony/dependency-injection": "^7.3",
+        "symfony/dotenv": "^7.3"
     },
     "autoload-dev": {
        "psr-4": { "Tests\\Integration\\": "tests/integration/" }
