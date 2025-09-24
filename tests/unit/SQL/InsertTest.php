@@ -49,7 +49,7 @@ class InsertTest extends TestCase
         $result = $sut->getStatement();
 
         self::assertEquals(
-            "INSERT INTO `table_name` VALUES (:name, :email);",
+            "INSERT INTO `table_name` (`name`, `email`) VALUES (:name, :email);",
             $result,
             'It is should be possible to create a statement with provided Table name and Values parts.'
         );

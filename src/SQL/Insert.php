@@ -19,9 +19,10 @@ class Insert
         $this->ensureMandatoryParts();
 
         $tableName = StatementHelper::purifyStatementIdentifier($this->tableName);
+        $fields = StatementHelper::interpretFieldsFromArray($this->fields);
         $values = $this->interpretValues();
 
-        return "INSERT INTO {$tableName} VALUES ({$values});";
+        return "INSERT INTO {$tableName} ({$fields}) VALUES ({$values});";
     }
 
     public function into(string $tableName): void
