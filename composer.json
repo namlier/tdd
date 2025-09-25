@@ -15,6 +15,7 @@
     "require": {
         "ext-mbstring": "*",
         "ext-sqlite3": "*",
+        "ext-readline": "*",
         "symfony/dependency-injection": "^7.3",
         "symfony/dotenv": "^7.3",
         "symfony/config": "^7.3",

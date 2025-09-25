@@ -8,15 +8,21 @@ test-unit:
 # phpunit Integration tests
 .PHONY: test-integration
 test-integration:
+	$(MAKE) delete-integration-database
+	$(MAKE) create-integration-database
 	$(PHPUNIT) -c phpunit.integration.xml --testdox
 
 .PHONY: migrate
 migrate:
 	php8.4 migrations/migrate.php
 
-.PHONY: migrate-tests
-migrate-tests:
-	APP_ENV=test php8.4 migrations/migrate.php
+.PHONY: create-integration-database
+create-integration-database:
+	APP_ENV=test php8.4 migrations/create-database.php
+
+.PHONY: delete-integration-database
+delete-integration-database:
+	APP_ENV=test php8.4 migrations/delete-database.php
 
 .PHONY: coverage
 coverage:

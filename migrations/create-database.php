@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Namlier\UnitTesting\Sqlite\DB;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * Dotenv.
@@ -30,19 +30,15 @@ $containerBuilder->compile(true);
  */
 $db = $containerBuilder->get(DB::class);
 
-
-
-
 $migrations = glob(__DIR__ . '/*'); // TODO: брати тільки .php тільки цієї папки
 
-foreach ($migrations as $key => $migration) {
-    if (is_file($migration) && basename($migration) === 'migrate.php') {
-        $removeKey = $key;
+foreach ($migrations as &$migration) {
+    if (is_file($migration) && (basename($migration) === 'create-database.php' || basename($migration) === 'delete-database.php')) {
+        unset($migration);
 
         break;
     }
 }
-unset($migrations[$removeKey]);
 
 
 foreach ($migrations as $migration) {
