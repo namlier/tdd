@@ -31,6 +31,11 @@ class Select
         return $statement . ';';
     }
 
+    public function getBoundedValues(): array
+    {
+        return StatementHelper::interpretBoundedValues($this->whereClause);
+    }
+
     public function fields(string|array $fields): void
     {
         $this->fields = $fields;
@@ -89,10 +94,10 @@ class Select
         $whereChunks = [];
 
         foreach ($this->whereClause as $field => $value) {
-            $field = StatementHelper::purifyStatementIdentifier($field);
-            $value = StatementHelper::purifyFieldValue($value);
+            $purifiedField = StatementHelper::purifyStatementIdentifier($field);
+            $placeholder = StatementHelper::identifierToPlaceholder($field);
 
-            $whereChunks[] = $field . ' = ' . $value;
+            $whereChunks[] = $purifiedField . ' = ' . $placeholder;
         }
 
         return implode(' AND ', $whereChunks);

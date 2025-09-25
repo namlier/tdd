@@ -56,16 +56,18 @@ class SelectTest extends TestCase
     }
 
     #[DataProvider('whereClauseProvider')]
-    public function testWhereClause(array $whereClause, $expectedResult): void
+    public function testWhereClause(array $whereClause, string $expectedStatement, array $expectedBoundedValues): void
     {
         $sut = new Select();
         $sut->fields('*');
         $sut->from('users');
         $sut->where($whereClause);
 
-        $result = $sut->getStatement();
+        $resultStatement = $sut->getStatement();
+        $resultBoundedValues = $sut->getBoundedValues();
 
-        self::assertEquals($expectedResult, $result);
+        self::assertEquals($expectedStatement, $resultStatement);
+        self::assertEquals($expectedBoundedValues, $resultBoundedValues);
     }
 
     public static function fieldsTestProvider(): array
@@ -81,8 +83,12 @@ class SelectTest extends TestCase
     public static function whereClauseProvider(): array
     {
         return [
-            [['id' => ':id'], 'SELECT * FROM `users` WHERE `id` = :id;'],
-            [['id' => ':id', 'name' => ':name'], 'SELECT * FROM `users` WHERE `id` = :id AND `name` = :name;'],
+            [['id' => 5], 'SELECT * FROM `users` WHERE `id` = :id;', [':id' => 5]],
+            [
+                ['id' => 5, 'name' => 'Sasha'],
+                'SELECT * FROM `users` WHERE `id` = :id AND `name` = :name;',
+                [':id' => 5, ':name' => 'Sasha']
+            ],
         ];
     }
 }
