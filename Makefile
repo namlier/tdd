@@ -17,3 +17,7 @@ migrate:
 .PHONY: migrate-tests
 migrate-tests:
 	APP_ENV=test php8.4 migrations/migrate.php
+
+.PHONY: coverage
+coverage:
+	php8.4 vendor/bin/phpunit --coverage-html=coverage --configuration=phpunit.unit.xml
