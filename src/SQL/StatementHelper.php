@@ -6,17 +6,17 @@ namespace Namlier\UnitTesting\SQL;
 
 class StatementHelper
 {
-    public static function purifyStatementIdentifier(string $text): string
+    public static function purifyStatementIdentifier(string $identifier): string
     {
-        $text = str_replace('`', '', $text);
+        $text = str_replace('`', '', $identifier);
         $text = trim($text);
 
         return "`{$text}`";
     }
 
-    public static function purifyFieldValue(string $text): string
+    public static function identifierToPlaceholder(string $identifier): string
     {
-        $text = str_replace(':', '', $text);
+        $text = str_replace('`', '', $identifier);
         $text = trim($text);
 
         return ":{$text}";
@@ -43,5 +43,16 @@ class StatementHelper
         }
 
         return implode(', ', $purifiedFields);
+    }
+
+    public static function interpretBoundedValues(array $values): array
+    {
+        $boundedValues = [];
+
+        foreach ($values as $field => $value) {
+            $boundedValues = array_merge($boundedValues, [self::identifierToPlaceholder($field) => $value]);
+        }
+
+        return $boundedValues;
     }
 }

@@ -16,10 +16,10 @@ class StatementHelperTest extends TestCase
         self::assertEquals($expectedOutput, $result);
     }
 
-    #[DataProvider('valuesProvider')]
-    public function testPurifyValue(string $input, string $expectedOutput): void
+    #[DataProvider('identifiersProvider')]
+    public function testIdentifierToPlaceholder(string $input, string $expectedOutput): void
     {
-        $result = StatementHelper::purifyFieldValue($input);
+        $result = StatementHelper::identifierToPlaceholder($input);
 
         self::assertEquals($expectedOutput, $result);
     }
@@ -40,6 +40,13 @@ class StatementHelperTest extends TestCase
         self::assertEquals($expectedOutput, $result);
     }
 
+    public function testInterpretBoundedValues(): void
+    {
+        $result = StatementHelper::interpretBoundedValues(['id' => 5, 'name' => 'Sasha']);
+
+        self::assertEquals([':id' => 5, ':name' => 'Sasha'], $result);
+    }
+
     public static function tableAndFieldIdentifiersProvider(): array
     {
         return [
@@ -50,14 +57,14 @@ class StatementHelperTest extends TestCase
         ];
     }
 
-    public static function valuesProvider(): array
+    public static function identifiersProvider(): array
     {
          return [
              ['id', ':id'],
-             [':name', ':name'],
-             [': email', ':email'],
-             [' :id ', ':id'],
-             [' id ', ':id']
+             ['`name`', ':name'],
+             ['` email', ':email'],
+             [' `id ', ':id'],
+             ['` id `', ':id']
          ];
     }
 
