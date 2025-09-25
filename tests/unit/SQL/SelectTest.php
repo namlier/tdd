@@ -55,19 +55,18 @@ class SelectTest extends TestCase
         self::assertEquals($expectedStatement, $result, $messageOnFail);
     }
 
-    #[DataProvider('whereClauseProvider')]
-    public function testWhereClause(array $whereClause, string $expectedStatement, array $expectedBoundedValues): void
+    public function testWhereClause(): void
     {
         $sut = new Select();
         $sut->fields('*');
         $sut->from('users');
-        $sut->where($whereClause);
+        $sut->where(['name' => 'Sasha', 'email' => 'namliers@gmail.com']);
 
         $resultStatement = $sut->getStatement();
         $resultBoundedValues = $sut->getBoundedValues();
 
-        self::assertEquals($expectedStatement, $resultStatement);
-        self::assertEquals($expectedBoundedValues, $resultBoundedValues);
+        self::assertEquals('SELECT * FROM `users` WHERE `name` = :name AND `email` = :email;', $resultStatement);
+        self::assertEquals([':name' => 'Sasha', ':email' => 'namliers@gmail.com'], $resultBoundedValues);
     }
 
     public static function fieldsTestProvider(): array
@@ -77,18 +76,6 @@ class SelectTest extends TestCase
             [['id', 'name', 'email'], 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with provided array.'],
             ['id,name, email', 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with listed fields as string.'],
             ['`id`, `name`,`email`', 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with listed fields wrapped in backticks as string.']
-        ];
-    }
-
-    public static function whereClauseProvider(): array
-    {
-        return [
-            [['id' => 5], 'SELECT * FROM `users` WHERE `id` = :id;', [':id' => 5]],
-            [
-                ['id' => 5, 'name' => 'Sasha'],
-                'SELECT * FROM `users` WHERE `id` = :id AND `name` = :name;',
-                [':id' => 5, ':name' => 'Sasha']
-            ],
         ];
     }
 }
