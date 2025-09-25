@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Namlier\UnitTesting\Sqlite;
 
+use Namlier\UnitTesting\SQL\Insert;
+use Namlier\UnitTesting\SQL\Select;
 use SQLite3;
 
 class DB extends SQLite3
@@ -13,29 +15,35 @@ class DB extends SQLite3
         $this->open($this->fileName);
     }
 
-    public function insert(string $tableName, array $data): void
+    public function insert(Insert $insert): void
     {
-        $keys = '(' . implode(',', array_keys($data)) . ')';
+        $preparedStatement = $this->prepare($insert->getStatement());
+        $boundedValues = $insert->getBoundedValues();
 
-        foreach ($data as &$value) {
-            $value = "'{$value}'";
+        foreach ($boundedValues as $field => $value) {
+            $preparedStatement->bindValue($field, $value);
         }
-        $values = '(' . implode(',', $data) . ')';
 
-        $exec = $this->exec("INSERT INTO {$tableName} {$keys} VALUES {$values}");
+        $sqliteResult = $preparedStatement->execute();
 
-        if (!$exec) {
+        if (!$sqliteResult) {
             throw new \Exception($this->lastErrorMsg());
         }
     }
 
-    public function queryAll(string $tableName, array $conditions = []): array
+    public function selectOne(Select $select): array
     {
-        $query = $this->query("SELECT * FROM {$tableName}");
-        $result = [];
+        $preparedStatement = $this->prepare($select->getStatement());
 
-        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
-            $result[] = $row;
+        foreach ($select->getBoundedValues() as $field => $value) {
+            $preparedStatement->bindValue($field, $value);
+        }
+
+        $sqliteResult = $preparedStatement->execute();
+        $result = $sqliteResult->fetchArray(SQLITE3_ASSOC);
+
+        if (!$result) {
+            throw new \Exception($this->lastErrorMsg());
         }
 
         return $result;
