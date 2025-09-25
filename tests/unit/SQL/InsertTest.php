@@ -18,16 +18,6 @@ class InsertTest extends TestCase
         $sut->getStatement();
     }
 
-    public function testFieldsIsMandatoryPartOfStatement(): void
-    {
-        $sut = new Insert();
-        $sut->into('table_name');
-
-        self::expectExceptionMessage('Fields is a mandatory part of the "INSERT" statement.');
-
-        $sut->getStatement();
-    }
-
     public function testValuesIsMandatoryPartOfStatement(): void
     {
         $sut = new Insert();
@@ -43,15 +33,20 @@ class InsertTest extends TestCase
     {
         $sut = new Insert();
         $sut->into('table_name');
-        $sut->fields(['name', 'email']);
-        $sut->values([':name', ':email']);
+        $sut->values(['name' => 'Sasha', 'email' => 'namliers@gmail.com']);
 
-        $result = $sut->getStatement();
+        $resultStatement = $sut->getStatement();
+        $resultBoundedValues = $sut->getBoundedValues();
 
         self::assertEquals(
             "INSERT INTO `table_name` (`name`, `email`) VALUES (:name, :email);",
-            $result,
+            $resultStatement,
             'It is should be possible to create a statement with provided Table name and Values parts.'
+        );
+
+        self::assertEquals(
+            [':name' => 'Sasha', ':email' => 'namliers@gmail.com'],
+            $resultBoundedValues
         );
     }
 }

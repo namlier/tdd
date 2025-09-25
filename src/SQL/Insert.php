@@ -19,10 +19,15 @@ class Insert
         $this->ensureMandatoryParts();
 
         $tableName = StatementHelper::purifyStatementIdentifier($this->tableName);
-        $fields = StatementHelper::interpretFieldsFromArray($this->fields);
+        $fields = StatementHelper::interpretFieldsFromArray(array_keys($this->values));
         $values = $this->interpretValues();
 
         return "INSERT INTO {$tableName} ({$fields}) VALUES ({$values});";
+    }
+
+    public function getBoundedValues(): array
+    {
+        return StatementHelper::interpretBoundedValues($this->values);
     }
 
     public function into(string $tableName): void
@@ -46,10 +51,6 @@ class Insert
             throw new \Exception('Table name is a mandatory part of the "INSERT" statement.');
         }
 
-        if (!isset($this->fields)) {
-            throw new \Exception('Fields is a mandatory part of the "INSERT" statement.');
-        }
-
         if (!isset($this->values)) {
             throw new \Exception('Values is a mandatory part of the "INSERT" statement.');
         }
@@ -57,12 +58,13 @@ class Insert
 
     private function interpretValues(): string
     {
-        $purifiedValues = [];
+        $placeholders = [];
+        $fields = array_keys($this->values);
 
-        foreach ($this->values as $value) {
-            $purifiedValues[] = StatementHelper::purifyFieldValue($value);
+        foreach ($fields as $field) {
+            $placeholders[] = StatementHelper::identifierToPlaceholder($field);
         }
 
-        return implode(', ', $purifiedValues);
+        return implode(', ', $placeholders);
     }
 }
