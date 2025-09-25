@@ -11,7 +11,7 @@ class StatementHelperTest extends TestCase
     #[DataProvider('tableAndFieldIdentifiersProvider')]
     public function testPurifyStatementIdentifier(string $input, string $expectedOutput): void
     {
-        $result = StatementHelper::purifyStatementIdentifier($input);
+        $result = StatementHelper::wrapInBackticks($input);
 
         self::assertEquals($expectedOutput, $result);
     }
@@ -19,7 +19,7 @@ class StatementHelperTest extends TestCase
     #[DataProvider('identifiersProvider')]
     public function testIdentifierToPlaceholder(string $input, string $expectedOutput): void
     {
-        $result = StatementHelper::identifierToPlaceholder($input);
+        $result = StatementHelper::fieldToPlaceholder($input);
 
         self::assertEquals($expectedOutput, $result);
     }
@@ -28,14 +28,6 @@ class StatementHelperTest extends TestCase
     public function testInterpretFieldsFromArray(array $fields, string $expectedOutput): void
     {
         $result = StatementHelper::interpretFieldsFromArray($fields);
-
-        self::assertEquals($expectedOutput, $result);
-    }
-
-    #[DataProvider('stringFieldsProvider')]
-    public function testInterpretFieldsFromString(string $fields, string $expectedOutput): void
-    {
-        $result = StatementHelper::interpretFieldsFromString($fields);
 
         self::assertEquals($expectedOutput, $result);
     }
@@ -51,8 +43,6 @@ class StatementHelperTest extends TestCase
     {
         return [
             ['table_name_or_field', '`table_name_or_field`'],
-            ['`table_name_or_field`', '`table_name_or_field`'],
-            ['`table_name_or_field', '`table_name_or_field`'],
             [' table_name_or_field ', '`table_name_or_field`'],
         ];
     }
@@ -61,10 +51,8 @@ class StatementHelperTest extends TestCase
     {
          return [
              ['id', ':id'],
-             ['`name`', ':name'],
-             ['` email', ':email'],
-             [' `id ', ':id'],
-             ['` id `', ':id']
+             ['name ', ':name'],
+             [' email', ':email'],
          ];
     }
 
@@ -75,17 +63,6 @@ class StatementHelperTest extends TestCase
         return [
             [['id', 'name', 'email'], $expectedResult],
             [[' id ', ' name ', ' email '], $expectedResult],
-            [['id` ', '` name` ', 'email `'], $expectedResult],
-        ];
-    }
-
-    public static function stringFieldsProvider(): array
-    {
-        $expectedResult = '`id`, `name`, `email`';
-
-        return [
-            ['id,name, email', $expectedResult],
-            [' id, `name, `email`', $expectedResult]
         ];
     }
 }

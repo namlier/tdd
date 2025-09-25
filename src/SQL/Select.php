@@ -12,20 +12,20 @@ class Select
 
     private string $from;
 
-    private array $whereClause = [];
+    private array $where = [];
 
     public function getStatement(): string
     {
         $this->ensureFromAndFieldsArePresent();
 
-        $interpretedFields = $this->interpretFields();
-        $interpretedFrom = $this->interpretFrom();
-        $whereClause = $this->interpretWhere();
+        $fields = $this->statementFields();
+        $from = StatementHelper::wrapInBackticks($this->from);
+        $where = $this->statementWhere();
 
-        $statement = "SELECT {$interpretedFields} FROM {$interpretedFrom}";
+        $statement = "SELECT {$fields} FROM {$from}";
 
-        if ($whereClause) {
-            $statement.= " WHERE {$whereClause}";
+        if ($where) {
+            $statement.= " WHERE {$where}";
         }
 
         return $statement . ';';
@@ -33,7 +33,7 @@ class Select
 
     public function getBoundedValues(): array
     {
-        return StatementHelper::interpretBoundedValues($this->whereClause);
+        return StatementHelper::interpretBoundedValues($this->where);
     }
 
     public function fields(string|array $fields): void
@@ -48,7 +48,7 @@ class Select
 
     public function where(array $clause): void
     {
-        $this->whereClause = $clause;
+        $this->where = $clause;
     }
 
     private function ensureFromAndFieldsArePresent(): void
@@ -62,7 +62,7 @@ class Select
         }
     }
 
-    private function interpretFields(): string
+    private function statementFields(): string
     {
         if (is_array($this->fields)) {
             return StatementHelper::interpretFieldsFromArray($this->fields);
@@ -77,27 +77,22 @@ class Select
             return '*';
         }
 
-        return StatementHelper::interpretFieldsFromString($this->fields);
+        return StatementHelper::wrapInBackticks($this->fields);
     }
 
-    private function interpretFrom(): string
+    private function statementWhere(): string
     {
-        return StatementHelper::purifyStatementIdentifier($this->from);
-    }
-
-    private function interpretWhere(): string
-    {
-        if (empty($this->whereClause)) {
+        if (empty($this->where)) {
             return '';
         }
 
         $whereChunks = [];
 
-        foreach ($this->whereClause as $field => $value) {
-            $purifiedField = StatementHelper::purifyStatementIdentifier($field);
-            $placeholder = StatementHelper::identifierToPlaceholder($field);
+        foreach ($this->where as $field => $value) {
+            $wrappedField = StatementHelper::wrapInBackticks($field);
+            $placeholder = StatementHelper::fieldToPlaceholder($field);
 
-            $whereChunks[] = $purifiedField . ' = ' . $placeholder;
+            $whereChunks[] = $wrappedField . ' = ' . $placeholder;
         }
 
         return implode(' AND ', $whereChunks);

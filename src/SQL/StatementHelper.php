@@ -6,18 +6,16 @@ namespace Namlier\UnitTesting\SQL;
 
 class StatementHelper
 {
-    public static function purifyStatementIdentifier(string $identifier): string
+    public static function wrapInBackticks(string $identifier): string
     {
-        $text = str_replace('`', '', $identifier);
-        $text = trim($text);
+        $text = trim($identifier);
 
         return "`{$text}`";
     }
 
-    public static function identifierToPlaceholder(string $identifier): string
+    public static function fieldToPlaceholder(string $identifier): string
     {
-        $text = str_replace('`', '', $identifier);
-        $text = trim($text);
+        $text = trim($identifier);
 
         return ":{$text}";
     }
@@ -27,19 +25,7 @@ class StatementHelper
         $purifiedFields = [];
 
         foreach ($fields as $field) {
-            $purifiedFields[] = StatementHelper::purifyStatementIdentifier($field);
-        }
-
-        return implode(', ', $purifiedFields);
-    }
-
-    public static function interpretFieldsFromString(string $fields): string
-    {
-        $fields = explode(',', $fields);
-        $purifiedFields = [];
-
-        foreach ($fields as $field) {
-            $purifiedFields[] = StatementHelper::purifyStatementIdentifier($field);
+            $purifiedFields[] = StatementHelper::wrapInBackticks($field);
         }
 
         return implode(', ', $purifiedFields);
@@ -50,7 +36,7 @@ class StatementHelper
         $boundedValues = [];
 
         foreach ($values as $field => $value) {
-            $boundedValues = array_merge($boundedValues, [self::identifierToPlaceholder($field) => $value]);
+            $boundedValues = array_merge($boundedValues, [self::fieldToPlaceholder($field) => $value]);
         }
 
         return $boundedValues;

@@ -43,16 +43,45 @@ class SelectTest extends TestCase
         self::assertEquals('SELECT * FROM `users`;', $result);
     }
 
-    #[DataProvider('fieldsTestProvider')]
-    public function testFieldsMethodInvocationPatterns(string|array $fields, string $from, string $expectedStatement, string $messageOnFail): void
+    public function testFieldsWhenAsteriskProvided(): void
     {
         $sut = new Select();
-        $sut->fields($fields);
-        $sut->from($from);
+        $sut->fields('*');
+        $sut->from('users');
 
         $result = $sut->getStatement();
 
-        self::assertEquals($expectedStatement, $result, $messageOnFail);
+        self::assertEquals('SELECT * FROM `users`;', $result, 'Fields should work with provided asterisk "*".');
+    }
+
+    public function testFieldsWhenArrayProvided(): void
+    {
+        $sut = new Select();
+        $sut->fields(['name', 'id']);
+        $sut->from('users');
+
+        $result = $sut->getStatement();
+
+        self::assertEquals(
+            'SELECT `name`, `id` FROM `users`;',
+            $result,
+            'Fields should work with provided array.'
+        );
+    }
+
+    public function testFieldsWhenStringProvided(): void
+    {
+        $sut = new Select();
+        $sut->fields('id');
+        $sut->from('users');
+
+        $result = $sut->getStatement();
+
+        self::assertEquals(
+            'SELECT `id` FROM `users`;',
+            $result,
+            'Fields should work with provided single field as string.'
+        );
     }
 
     public function testWhereClause(): void
@@ -67,15 +96,5 @@ class SelectTest extends TestCase
 
         self::assertEquals('SELECT * FROM `users` WHERE `name` = :name AND `email` = :email;', $resultStatement);
         self::assertEquals([':name' => 'Sasha', ':email' => 'namliers@gmail.com'], $resultBoundedValues);
-    }
-
-    public static function fieldsTestProvider(): array
-    {
-        return [
-            ['*', 'users', 'SELECT * FROM `users`;', 'Fields should work with provided asterisk "*".'],
-            [['id', 'name', 'email'], 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with provided array.'],
-            ['id,name, email', 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with listed fields as string.'],
-            ['`id`, `name`,`email`', 'users', "SELECT `id`, `name`, `email` FROM `users`;", 'Fields should work with listed fields wrapped in backticks as string.']
-        ];
     }
 }

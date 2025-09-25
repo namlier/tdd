@@ -18,7 +18,7 @@ class Insert
     {
         $this->ensureMandatoryParts();
 
-        $tableName = StatementHelper::purifyStatementIdentifier($this->tableName);
+        $tableName = StatementHelper::wrapInBackticks($this->tableName);
         $fields = StatementHelper::interpretFieldsFromArray(array_keys($this->values));
         $values = $this->interpretValues();
 
@@ -62,7 +62,7 @@ class Insert
         $fields = array_keys($this->values);
 
         foreach ($fields as $field) {
-            $placeholders[] = StatementHelper::identifierToPlaceholder($field);
+            $placeholders[] = StatementHelper::fieldToPlaceholder($field);
         }
 
         return implode(', ', $placeholders);
