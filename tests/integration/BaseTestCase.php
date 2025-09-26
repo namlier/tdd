@@ -7,9 +7,10 @@ namespace Tests\Integration;
 use Namlier\UnitTesting\Sqlite\DB;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class BaseTestCase extends TestCase
 {
@@ -24,6 +25,14 @@ class BaseTestCase extends TestCase
 
             $loader = new YamlFileLoader($containerBuilder, new FileLocator(dirname(__DIR__, 2) . '/config'));
             $loader->load('services.yaml');
+
+            foreach ($containerBuilder->getDefinitions() as $definition) {
+                if ($definition->getClass() === ContainerInterface::class) {
+                    continue;
+                }
+
+                $definition->setPublic(true);
+            }
 
             $containerBuilder->compile(true);
 

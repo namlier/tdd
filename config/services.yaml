@@ -1,5 +1,4 @@
 services:
     Namlier\UnitTesting\Sqlite\DB:
-        public: true
         arguments:
             $fileName: '%env(SQLITE_FILENAME)%'
