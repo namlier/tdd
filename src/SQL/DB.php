@@ -34,8 +34,8 @@ class DB
         }
 
         $sqliteResult = $preparedStatement->execute();
+        $this->ensureSQLiteMethodSucceed($sqliteResult);
         $result = $sqliteResult->fetchArray(SQLITE3_ASSOC);
-        $this->ensureSQLiteMethodSucceed($result);
 
         return $result;
     }
