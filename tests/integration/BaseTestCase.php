@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use Namlier\UnitTesting\Sqlite\DB;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use SQLite3;
 
 class BaseTestCase extends TestCase
 {
     private static Container $container;
 
-    private DB $db;
+    private SQLite3 $db;
 
     protected function getContainer(): Container
     {
@@ -58,11 +58,11 @@ class BaseTestCase extends TestCase
         parent::tearDown();
     }
 
-    private function getDB(): DB
+    private function getDB(): SQLite3
     {
         if (!isset($this->db)) {
             $this->db = $this->getContainer()
-                ->get(DB::class);
+                ->get(SQLite3::class);
         }
 
         return $this->db;

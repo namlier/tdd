@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
-return function(\Namlier\UnitTesting\Sqlite\DB $db) {
+return function(SQLite3 $db) {
     $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

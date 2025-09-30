@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Integration\Sqlite;
+namespace Tests\Integration\SQL;
 
+use Namlier\UnitTesting\SQL\DB;
 use Namlier\UnitTesting\SQL\Insert;
 use Namlier\UnitTesting\SQL\Select;
 use Tests\Integration\BaseTestCase;
-use Namlier\UnitTesting\Sqlite\DB;
 
 class DBTest extends BaseTestCase
 {
