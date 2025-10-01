@@ -3,14 +3,18 @@ PHPUNIT := ./vendor/bin/phpunit
 # phpunit Unit tests
 .PHONY: test-unit
 test-unit:
-	$(PHPUNIT) -c phpunit.unit.xml --testdox
+	$(PHPUNIT) -c phpunit.unit.xml --testdox --coverage-php=coverage/unit.cov
 
 # phpunit Integration tests
 .PHONY: test-integration
 test-integration:
 	$(MAKE) delete-integration-database
 	$(MAKE) create-integration-database
-	$(PHPUNIT) -c phpunit.integration.xml --testdox
+	$(PHPUNIT) -c phpunit.integration.xml --testdox --coverage-php=coverage/integration.cov
+
+.PHONY: coverage
+coverage:
+	php8.4 tools/phpcov merge coverage --html coverage/coverage-html
 
 .PHONY: migrate
 migrate:
@@ -23,7 +27,3 @@ create-integration-database:
 .PHONY: delete-integration-database
 delete-integration-database:
 	APP_ENV=test php8.4 migrations/delete-database.php
-
-.PHONY: coverage
-coverage:
-	php8.4 vendor/bin/phpunit --coverage-html=coverage --configuration=phpunit.unit.xml
