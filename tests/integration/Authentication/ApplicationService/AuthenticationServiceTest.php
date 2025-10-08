@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Integration\Authentication\ApplicationService;
 
+use Namlier\TDD\User\Repository\UserRepositoryInterface;
 use Namlier\TDD\User\Authentication\Application\AuthenticationService;
 use Namlier\TDD\User\Authentication\Application\PasswordHasherInterface;
 use Namlier\TDD\User\Entity\User;
-use Namlier\TDD\User\Repository\UserRepository;
 use PHPUnit\Framework\Attributes\Depends;
 use Tests\Integration\BaseTestCase;
 
@@ -21,9 +21,9 @@ class AuthenticationServiceTest extends BaseTestCase
 
         $sut->register('johndoe@gmail.com', '123123qQ!Q!');
 
-        /** @var UserRepository $userRepository */
+        /** @var UserRepositoryInterface $userRepository */
         $userRepository = $this->getContainer()
-            ->get(UserRepository::class);
+            ->get(UserRepositoryInterface::class);
         $user = $userRepository->get('johndoe@gmail.com');
 
         self::assertEquals(

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Namlier\TDD\User\Authentication\Application;
 
+use Namlier\TDD\User\Repository\UserRepositoryInterface;
 use Namlier\TDD\User\Entity\User;
-use Namlier\TDD\User\Repository\UserRepository;
 
 class AuthenticationService
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepositoryInterface $userRepository,
         private readonly PasswordHasherInterface $passwordHasher,
         private readonly PasswordValidatorInterface $passwordValidator,
     ) {}

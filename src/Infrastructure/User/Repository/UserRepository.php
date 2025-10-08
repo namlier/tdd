@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Namlier\TDD\User\Repository;
+namespace Namlier\TDD\Infrastructure\User\Repository;
 
+use Doctrine\Instantiator\Instantiator;
 use Namlier\TDD\SQL\DB;
 use Namlier\TDD\SQL\Insert;
 use Namlier\TDD\SQL\Select;
 use Namlier\TDD\User\Entity\User;
-use Doctrine\Instantiator\Instantiator;
+use Namlier\TDD\User\Repository\UserRepositoryInterface;
 use ReflectionProperty;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private readonly DB $db,

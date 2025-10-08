@@ -7,12 +7,16 @@ services:
         arguments:
             $filename: '%env(SQLITE_FILENAME)%'
 
+    # TODO: remove to infra dir
     Doctrine\Instantiator\Instantiator: ~
+    Namlier\TDD\SQL\DB: ~
     Namlier\TDD\User\Authentication\Application\PasswordHasherInterface:
         class: Namlier\TDD\Common\PasswordHasher
     Namlier\TDD\User\Authentication\Application\PasswordValidatorInterface:
         class: Namlier\TDD\Common\PasswordValidator
+    Namlier\TDD\User\Repository\UserRepositoryInterface:
+      class: Namlier\TDD\Infrastructure\User\Repository\UserRepository
 
-    Namlier\TDD\SQL\DB: ~
+    # Domain
     Namlier\TDD\User\Authentication\Application\AuthenticationService: ~
-    Namlier\TDD\User\Repository\UserRepository: ~
+

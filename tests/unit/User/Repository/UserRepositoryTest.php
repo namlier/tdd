@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
-use Namlier\TDD\User\Repository\UserRepository;
-use Namlier\TDD\SQL\DB;
 use Doctrine\Instantiator\Instantiator;
+use Namlier\TDD\Infrastructure\User\Repository\UserRepository;
+use Namlier\TDD\SQL\DB;
+use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
 {
