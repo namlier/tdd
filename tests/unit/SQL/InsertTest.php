@@ -22,7 +22,6 @@ class InsertTest extends TestCase
     {
         $sut = new Insert();
         $sut->into('table_name');
-        $sut->fields(['name']);
 
         self::expectExceptionMessage('Values is a mandatory part of the "INSERT" statement.');
 

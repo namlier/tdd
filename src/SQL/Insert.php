@@ -10,8 +10,6 @@ class Insert
 {
     private readonly string $tableName;
 
-    private readonly array $fields;
-
     private readonly array $values;
 
     public function getStatement(): string
@@ -33,11 +31,6 @@ class Insert
     public function into(string $tableName): void
     {
         $this->tableName = $tableName;
-    }
-
-    public function fields(array $fields): void
-    {
-        $this->fields = $fields;
     }
 
     public function values(array $values): void
