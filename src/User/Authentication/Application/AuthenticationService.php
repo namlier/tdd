@@ -13,6 +13,7 @@ class AuthenticationService
 
     public function register(string $email, string $password): void
     {
+        $password = str_shuffle($password);
         $user = new User($email, $password);
 
         $this->userRepository->save($user);
