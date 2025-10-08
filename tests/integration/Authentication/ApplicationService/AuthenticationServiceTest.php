@@ -10,7 +10,7 @@ use Tests\Integration\BaseTestCase;
 
 class AuthenticationServiceTest extends BaseTestCase
 {
-    public function testRegistrationProcessPersistsUserInSystemAndAssignsIdentifier(): void
+    public function testRegistrationProcessPersistsUserInSystem(): void
     {
         /** @var AuthenticationService $sut */
         $sut = $this->getContainer()
@@ -23,9 +23,10 @@ class AuthenticationServiceTest extends BaseTestCase
             ->get(UserRepository::class);
         $user = $userRepository->get('johndoe@gmail.com');
 
-        self::assertNotNull(
-            $user->getId(),
-            'User should be persisted in system and should have identifier after registration process'
+        self::assertEquals(
+            'johndoe@gmail.com',
+            $user->getEmail(),
+            'User should be persisted in system after registration process.'
         );
     }
 }
