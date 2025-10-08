@@ -42,4 +42,14 @@ class AuthenticationServiceTest extends BaseTestCase
             'User should get identifier in system during registration process.'
         );
     }
+
+    #[Depends('testRegistrationProcessPersistsUserInSystem')]
+    public function testRegistrationProcessNotStoringPlainPassword(User $user): void
+    {
+        self::assertNotEquals(
+            '123123q',
+            $user->getPassword(),
+            "Password must be stored in a hashed form and never equal to the plain password.")
+        ;
+    }
 }
