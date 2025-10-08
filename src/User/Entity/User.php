@@ -10,6 +10,11 @@ class User
 
     public function __construct(private readonly string $email, private readonly string $password) {}
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
