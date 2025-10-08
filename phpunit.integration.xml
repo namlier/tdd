@@ -30,4 +30,9 @@
             <directory>src</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <php outputFile="coverage/integration.cov" />
+        </report>
+    </coverage>
 </phpunit>

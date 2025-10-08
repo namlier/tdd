@@ -29,4 +29,9 @@
             <directory>src</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <php outputFile="coverage/unit.cov" />
+        </report>
+    </coverage>
 </phpunit>
