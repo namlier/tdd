@@ -12,14 +12,14 @@ class PasswordHasherTest extends TestCase
     public function testDoesPasswordLookHashed(): void
     {
         $sut = new PasswordHasher();
-        $hashedPassword = $sut->hash('123123q');
+        $hashedPassword = $sut->hash('123123qQ!');
 
-        self::assertNotEquals('123123q', $hashedPassword);
+        self::assertNotEquals('123123qQ!', $hashedPassword);
 
         self::assertTrue($sut->doesPasswordLookHashed($hashedPassword));
 
-        self::assertTrue($sut->verify('123123q', $hashedPassword));
+        self::assertTrue($sut->verify('123123qQ!', $hashedPassword));
 
-        self::assertFalse($sut->doesPasswordLookHashed('123123q'));
+        self::assertFalse($sut->doesPasswordLookHashed('123123qQ!'));
     }
 }

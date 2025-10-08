@@ -19,7 +19,7 @@ class AuthenticationServiceTest extends BaseTestCase
         $sut = $this->getContainer()
             ->get(AuthenticationService::class);
 
-        $sut->register('johndoe@gmail.com', '123123q');
+        $sut->register('johndoe@gmail.com', '123123qQ!Q!');
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->getContainer()
@@ -48,7 +48,7 @@ class AuthenticationServiceTest extends BaseTestCase
     public function testRegisteredUserHasNotStoredPlainPassword(User $user): void
     {
         self::assertNotEquals(
-            '123123q',
+            '123123qQ!',
             $user->getPassword(),
             "Password must be stored in a hashed form and never equal to the plain password.")
         ;
@@ -67,7 +67,7 @@ class AuthenticationServiceTest extends BaseTestCase
         );
 
         self::assertTrue(
-            $passwordHasher->verify('123123q', $user->getPassword())
+            $passwordHasher->verify('123123qQ!Q!', $user->getPassword())
         );
     }
 }

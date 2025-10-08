@@ -10,6 +10,8 @@ services:
     Doctrine\Instantiator\Instantiator: ~
     Namlier\TDD\User\Authentication\Application\PasswordHasherInterface:
         class: Namlier\TDD\Common\PasswordHasher
+    Namlier\TDD\User\Authentication\Application\PasswordValidatorInterface:
+        class: Namlier\TDD\Common\PasswordValidator
 
     Namlier\TDD\SQL\DB: ~
     Namlier\TDD\User\Authentication\Application\AuthenticationService: ~

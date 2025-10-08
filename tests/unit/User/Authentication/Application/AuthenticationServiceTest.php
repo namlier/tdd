@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace User\Authentication\Application;
 
 use Namlier\TDD\User\Authentication\Application\PasswordHasherInterface;
+use Namlier\TDD\User\Authentication\Application\PasswordValidatorInterface;
 use Namlier\TDD\User\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Namlier\TDD\User\Authentication\Application\AuthenticationService;
@@ -16,17 +17,18 @@ class AuthenticationServiceTest extends TestCase
     {
         $userRepositoryMock = $this->createMock(UserRepository::class);
         $passwordHasherStub = $this->createStub(PasswordHasherInterface::class);
-        $sut = new AuthenticationService($userRepositoryMock, $passwordHasherStub);
+        $passwordValidatorStub = $this->createStub(PasswordValidatorInterface::class);
+        $sut = new AuthenticationService($userRepositoryMock, $passwordHasherStub, $passwordValidatorStub);
 
         $userRepositoryMock->method('save')
             ->with($this->callback([self::class, 'assertPlainPasswordIsNotGoingToBeStoredInRepository']));
 
-        $sut->register('johndoe@gmail.com', '123123q');
+        $sut->register('johndoe@gmail.com', '123123qQ!');
     }
 
     public static function assertPlainPasswordIsNotGoingToBeStoredInRepository(User $user): bool
     {
-        self::assertNotEquals('123123q', $user->getPassword(), 'Plain password must not be stored.');
+        self::assertNotEquals('123123qQ!', $user->getPassword(), 'Plain password must not be stored.');
 
         return true;
     }

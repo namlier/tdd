@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Namlier\TDD\TestDox;
+namespace Namlier\TDD\Common;
 
-class PasswordValidator
+use Namlier\TDD\User\Authentication\Application\PasswordValidatorInterface;
+
+class PasswordValidator implements PasswordValidatorInterface
 {
     private const string SPECIAL_SYMBOLS = '!@#$%^&*()';
 
-    public function isValid(string $password): bool
+    public function ensureValid(string $password): void
     {
         $message = '';
         $hasError = false;
@@ -41,7 +43,5 @@ class PasswordValidator
         if ($hasError) {
             throw new \Exception($message);
         }
-
-        return true;
     }
 }

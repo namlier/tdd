@@ -11,7 +11,7 @@ class UserTest extends TestCase
 {
     public function testCreateNewUserGetsDefaultRole(): void
     {
-        $sut = new User('johndoe@gmail.com', '123123q');
+        $sut = new User('johndoe@gmail.com', '123123qQ!');
 
         self::assertEquals('ROLE_USER', $sut->getRole(), 'User should get default role during creation.');
     }

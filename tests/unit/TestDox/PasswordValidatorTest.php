@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TestDox;
 
-use Namlier\TDD\TestDox\PasswordValidator;
+use Namlier\TDD\Common\PasswordValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +37,7 @@ class PasswordValidatorTest extends TestCase
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least 8 symbols.');
 
-        $sut->isValid($notEnoughCharactersPassword);
+        $sut->ensureValid($notEnoughCharactersPassword);
     }
 
     public function testIsNotValidWhenNoAnyUppercaseCharProvided(): void
@@ -49,7 +49,7 @@ class PasswordValidatorTest extends TestCase
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one uppercase character.');
 
-        $sut->isValid($noUpperCasePassword);
+        $sut->ensureValid($noUpperCasePassword);
     }
 
     public function testIsNotValidWhenNoAnyLowercaseCharProvided(): void
@@ -61,7 +61,7 @@ class PasswordValidatorTest extends TestCase
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one lowercase character.');
 
-        $sut->isValid($noLowerCasePassword);
+        $sut->ensureValid($noLowerCasePassword);
     }
 
     public function testIsNotValidWhenAnyNumberProvided(): void
@@ -73,7 +73,7 @@ class PasswordValidatorTest extends TestCase
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one number.');
 
-        $sut->isValid($noAnyNumberPassword);
+        $sut->ensureValid($noAnyNumberPassword);
     }
 
     public function testIsNotValidWhenNoAnySpecialSymbolProvided(): void
@@ -85,7 +85,7 @@ class PasswordValidatorTest extends TestCase
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Password should contain at least one special symbol from list "' . self::SPECIAL_SYMBOLS . '".');
 
-        $sut->isValid($noAnySpecialSymbolPassword);
+        $sut->ensureValid($noAnySpecialSymbolPassword);
     }
 
     #[DataProvider('goodPasswordWithSpecialSymbol')]
@@ -100,10 +100,13 @@ class PasswordValidatorTest extends TestCase
         );
         $password = implode($passwordArray);
 
-        self::assertTrue(
-            $sut->isValid($password),
-            'It should be valid if this special symbol is used and all of the others conditions satisfied.'
-        );
+        self::expectNotToPerformAssertions();
+
+        try {
+            $sut->ensureValid($password);
+        } catch (\Exception $e) {
+            self::fail('It should be valid if this special symbol is used and all of the others conditions satisfied.');
+        }
     }
 
     public static function goodPasswordWithSpecialSymbol(): \Generator

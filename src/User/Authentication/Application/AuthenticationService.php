@@ -11,11 +11,13 @@ class AuthenticationService
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly PasswordHasherInterface $passwordHasher
+        private readonly PasswordHasherInterface $passwordHasher,
+        private readonly PasswordValidatorInterface $passwordValidator,
     ) {}
 
     public function register(string $email, string $password): void
     {
+        $this->passwordValidator->ensureValid($password);
         $password = $this->passwordHasher->hash($password);
         $user = new User($email, $password);
 
