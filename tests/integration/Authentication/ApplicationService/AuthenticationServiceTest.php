@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Integration\Authentication\ApplicationService;
 
 use Namlier\UnitTesting\User\Authentication\Application\AuthenticationService;
+use Namlier\UnitTesting\User\Authentication\Application\PasswordHasherInterface;
 use Namlier\UnitTesting\User\Entity\User;
 use Namlier\UnitTesting\User\Repository\UserRepository;
 use PHPUnit\Framework\Attributes\Depends;
@@ -35,7 +36,7 @@ class AuthenticationServiceTest extends BaseTestCase
     }
 
     #[Depends('testRegistrationProcessPersistsUserInSystem')]
-    public function testRegistrationProcessAssignsIdToNewUser(User $user): void
+    public function testRegisteredUserHasIdentifier(User $user): void
     {
         self::assertNotEmpty(
             $user->getId(),
@@ -44,12 +45,29 @@ class AuthenticationServiceTest extends BaseTestCase
     }
 
     #[Depends('testRegistrationProcessPersistsUserInSystem')]
-    public function testRegistrationProcessNotStoringPlainPassword(User $user): void
+    public function testRegisteredUserHasNotStoredPlainPassword(User $user): void
     {
         self::assertNotEquals(
             '123123q',
             $user->getPassword(),
             "Password must be stored in a hashed form and never equal to the plain password.")
         ;
+    }
+
+    #[Depends('testRegistrationProcessPersistsUserInSystem')]
+    public function testRegisteredUserHasHashedPassword(User $user): void
+    {
+        /** @var PasswordHasherInterface $passwordHasher */
+        $passwordHasher = $this->getContainer()
+            ->get(PasswordHasherInterface::class);
+
+        self::assertTrue(
+            $passwordHasher->doesPasswordLookHashed($user->getPassword()),
+            'Password doesn\'t look like hashed.'
+        );
+
+        self::assertTrue(
+            $passwordHasher->verify('123123q', $user->getPassword())
+        );
     }
 }
