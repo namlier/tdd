@@ -6,8 +6,8 @@ return function(SQLite3 $db) {
     $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT UNIQUE
+    email TEXT UNIQUE,
+    password TEXT NOT NULL
 );
 SQL;
 
