@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Namlier\UnitTesting\Output\View;
+use Namlier\TDD\Output\View;
 
 class ViewTest extends TestCase
 {

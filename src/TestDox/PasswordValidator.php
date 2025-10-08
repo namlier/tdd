@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\TestDox;
+namespace Namlier\TDD\TestDox;
 
 class PasswordValidator
 {

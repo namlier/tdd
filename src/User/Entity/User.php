@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\User\Entity;
+namespace Namlier\TDD\User\Entity;
 
 class User
 {

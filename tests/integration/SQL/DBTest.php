@@ -2,9 +2,9 @@
 
 namespace Tests\Integration\SQL;
 
-use Namlier\UnitTesting\SQL\DB;
-use Namlier\UnitTesting\SQL\Insert;
-use Namlier\UnitTesting\SQL\Select;
+use Namlier\TDD\SQL\DB;
+use Namlier\TDD\SQL\Insert;
+use Namlier\TDD\SQL\Select;
 use Tests\Integration\BaseTestCase;
 
 class DBTest extends BaseTestCase

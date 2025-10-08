@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TestDox;
 
-use Namlier\UnitTesting\TestDox\PasswordValidator;
+use Namlier\TDD\TestDox\PasswordValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;

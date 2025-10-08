@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Namlier\UnitTesting\SQL\StatementHelper;
+use Namlier\TDD\SQL\StatementHelper;
 
 class StatementHelperTest extends TestCase
 {

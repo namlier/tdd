@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SQL;
 
-use Namlier\UnitTesting\SQL\Insert;
+use Namlier\TDD\SQL\Insert;
 use PHPUnit\Framework\TestCase;
 
 class InsertTest extends TestCase

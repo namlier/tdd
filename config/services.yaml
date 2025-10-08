@@ -8,9 +8,9 @@ services:
             $filename: '%env(SQLITE_FILENAME)%'
 
     Doctrine\Instantiator\Instantiator: ~
-    Namlier\UnitTesting\User\Authentication\Application\PasswordHasherInterface:
-        class: Namlier\UnitTesting\Common\PasswordHasher
+    Namlier\TDD\User\Authentication\Application\PasswordHasherInterface:
+        class: Namlier\TDD\Common\PasswordHasher
 
-    Namlier\UnitTesting\SQL\DB: ~
-    Namlier\UnitTesting\User\Authentication\Application\AuthenticationService: ~
-    Namlier\UnitTesting\User\Repository\UserRepository: ~
+    Namlier\TDD\SQL\DB: ~
+    Namlier\TDD\User\Authentication\Application\AuthenticationService: ~
+    Namlier\TDD\User\Repository\UserRepository: ~

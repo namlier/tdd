@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Namlier\UnitTesting\Greeter;
+use Namlier\TDD\Greeter;
 
 class GreeterTest extends TestCase
 {

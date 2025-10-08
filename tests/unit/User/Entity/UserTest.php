@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Entity;
 
-use Namlier\UnitTesting\User\Entity\User;
+use Namlier\TDD\User\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase

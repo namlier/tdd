@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\User\Authentication\Application;
+namespace Namlier\TDD\User\Authentication\Application;
 
 interface PasswordHasherInterface
 {

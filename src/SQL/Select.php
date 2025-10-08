@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\SQL;
+namespace Namlier\TDD\SQL;
 
-use Namlier\UnitTesting\SQL\StatementHelper;
+use Namlier\TDD\SQL\StatementHelper;
 
 class Select
 {

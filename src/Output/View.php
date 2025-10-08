@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\Output;
+namespace Namlier\TDD\Output;
 
 
 class View

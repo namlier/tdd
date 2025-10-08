@@ -1,9 +1,9 @@
 {
-    "name": "namlier/unit-testing",
+    "name": "namlier/tdd",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Namlier\\UnitTesting\\": "src/"
+            "Namlier\\TDD\\": "src/"
         }
     },
     "authors": [

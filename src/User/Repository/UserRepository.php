@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\User\Repository;
+namespace Namlier\TDD\User\Repository;
 
-use Namlier\UnitTesting\SQL\DB;
-use Namlier\UnitTesting\SQL\Insert;
-use Namlier\UnitTesting\SQL\Select;
-use Namlier\UnitTesting\User\Entity\User;
+use Namlier\TDD\SQL\DB;
+use Namlier\TDD\SQL\Insert;
+use Namlier\TDD\SQL\Select;
+use Namlier\TDD\User\Entity\User;
 use Doctrine\Instantiator\Instantiator;
 use ReflectionProperty;
 

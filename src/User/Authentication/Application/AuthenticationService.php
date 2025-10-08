@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\User\Authentication\Application;
+namespace Namlier\TDD\User\Authentication\Application;
 
-use Namlier\UnitTesting\User\Entity\User;
-use Namlier\UnitTesting\User\Repository\UserRepository;
+use Namlier\TDD\User\Entity\User;
+use Namlier\TDD\User\Repository\UserRepository;
 
 class AuthenticationService
 {

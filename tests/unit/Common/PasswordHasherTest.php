@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Common;
 
-use Namlier\UnitTesting\Common\PasswordHasher;
+use Namlier\TDD\Common\PasswordHasher;
 use PHPUnit\Framework\TestCase;
 
 class PasswordHasherTest extends TestCase

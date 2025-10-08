@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace User\Authentication\Application;
 
-use Namlier\UnitTesting\User\Authentication\Application\PasswordHasherInterface;
-use Namlier\UnitTesting\User\Repository\UserRepository;
+use Namlier\TDD\User\Authentication\Application\PasswordHasherInterface;
+use Namlier\TDD\User\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
-use Namlier\UnitTesting\User\Authentication\Application\AuthenticationService;
-use Namlier\UnitTesting\User\Entity\User;
+use Namlier\TDD\User\Authentication\Application\AuthenticationService;
+use Namlier\TDD\User\Entity\User;
 
 class AuthenticationServiceTest extends TestCase
 {

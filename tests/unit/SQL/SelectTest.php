@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SQL;
 
-use Namlier\UnitTesting\SQL\Select;
+use Namlier\TDD\SQL\Select;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

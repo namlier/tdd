@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SQL;
 
-use Namlier\UnitTesting\SQL\DB;
-use Namlier\UnitTesting\SQL\Insert;
+use Namlier\TDD\SQL\DB;
+use Namlier\TDD\SQL\Insert;
 use PHPUnit\Framework\TestCase;
 use SQLite3;
 use SQLite3Stmt;
-use Namlier\UnitTesting\SQL\Select;
+use Namlier\TDD\SQL\Select;
 
 class DBTest extends TestCase
 {

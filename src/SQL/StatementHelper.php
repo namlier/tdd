@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\SQL;
+namespace Namlier\TDD\SQL;
 
 class StatementHelper
 {

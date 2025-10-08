@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Namlier\UnitTesting\Common;
+namespace Namlier\TDD\Common;
 
-use Namlier\UnitTesting\User\Authentication\Application\PasswordHasherInterface;
+use Namlier\TDD\User\Authentication\Application\PasswordHasherInterface;
 
 class PasswordHasher implements PasswordHasherInterface
 {
