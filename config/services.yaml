@@ -8,3 +8,5 @@ services:
             $filename: '%env(SQLITE_FILENAME)%'
 
     Namlier\UnitTesting\SQL\DB: ~
+    Namlier\UnitTesting\User\Authentication\Application\AuthenticationService: ~
+    Namlier\UnitTesting\User\Repository\UserRepository: ~
