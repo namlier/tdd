@@ -89,12 +89,12 @@ class SelectTest extends TestCase
         $sut = new Select();
         $sut->fields('*');
         $sut->from('users');
-        $sut->where(['name' => 'Sasha', 'email' => 'namliers@gmail.com']);
+        $sut->where(['name' => 'John', 'email' => 'johndoe@gmail.com']);
 
         $resultStatement = $sut->getStatement();
         $resultBoundedValues = $sut->getBoundedValues();
 
         self::assertEquals('SELECT * FROM `users` WHERE `name` = :name AND `email` = :email;', $resultStatement);
-        self::assertEquals([':name' => 'Sasha', ':email' => 'namliers@gmail.com'], $resultBoundedValues);
+        self::assertEquals([':name' => 'John', ':email' => 'johndoe@gmail.com'], $resultBoundedValues);
     }
 }

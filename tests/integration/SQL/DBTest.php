@@ -15,7 +15,7 @@ class DBTest extends BaseTestCase
         $db = $this->getContainer()
             ->get(DB::class);
 
-        $user = ['name' => 'Sasha', 'email' => 'namliers@gmail.com'];
+        $user = ['name' => 'Sasha', 'email' => 'johndoe@gmail.com'];
 
         $insert = new Insert();
         $insert->into('users');

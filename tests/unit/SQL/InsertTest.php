@@ -33,7 +33,7 @@ class InsertTest extends TestCase
     {
         $sut = new Insert();
         $sut->into('table_name');
-        $sut->values(['name' => 'Sasha', 'email' => 'namliers@gmail.com']);
+        $sut->values(['name' => 'John', 'email' => 'johndoe@gmail.com']);
 
         $resultStatement = $sut->getStatement();
         $resultBoundedValues = $sut->getBoundedValues();
@@ -45,7 +45,7 @@ class InsertTest extends TestCase
         );
 
         self::assertEquals(
-            [':name' => 'Sasha', ':email' => 'namliers@gmail.com'],
+            [':name' => 'John', ':email' => 'johndoe@gmail.com'],
             $resultBoundedValues
         );
     }
