@@ -9,7 +9,7 @@ use Namlier\UnitTesting\SQL\Insert;
 use Namlier\UnitTesting\SQL\Select;
 use Namlier\UnitTesting\User\Entity\User;
 use Doctrine\Instantiator\Instantiator;
-use ReflectionClass;
+use ReflectionProperty;
 
 class UserRepository
 {
@@ -42,17 +42,16 @@ class UserRepository
     {
         $user = $this->instantiator->instantiate(User::class);
 
-        $reflection = new ReflectionClass($user);
-
-        $property = $reflection->getProperty('id');
-        $property->setValue($user, $id);
-
-        $property = $reflection->getProperty('email');
-        $property->setValue($user, $email);
-
-        $property = $reflection->getProperty('password');
-        $property->setValue($user, $password);
+        $this->hydrateProperty($user, 'id', $id);
+        $this->hydrateProperty($user, 'email', $email);
+        $this->hydrateProperty($user, 'password', $password);
 
         return $user;
+    }
+
+    private function hydrateProperty(User $user, string $property, mixed $value): void
+    {
+        $property = new ReflectionProperty($user, $property);
+        $property->setValue($user, $value);
     }
 }
