@@ -6,9 +6,16 @@ namespace Namlier\UnitTesting\User\Entity;
 
 class User
 {
+    private const string DEFAULT_ROLE = 'ROLE_USER';
+
     private readonly int $id;
 
-    public function __construct(private readonly string $email, private readonly string $password) {}
+    private readonly string $role;
+
+    public function __construct(private readonly string $email, private readonly string $password)
+    {
+        $this->role = self::DEFAULT_ROLE;
+    }
 
     public function getId(): int
     {
@@ -23,5 +30,10 @@ class User
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
     }
 }
