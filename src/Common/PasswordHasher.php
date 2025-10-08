@@ -22,10 +22,6 @@ class PasswordHasher implements PasswordHasherInterface
     {
         $result = password_get_info($password);
 
-        if ($result === null) {
-            return false;
-        }
-
         if ($result['algo'] === PASSWORD_BCRYPT && $result['options'] === ['cost' => 13]) {
             return true;
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User\Authentication\Application;
 
+use Namlier\UnitTesting\User\Authentication\Application\PasswordHasherInterface;
 use Namlier\UnitTesting\User\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Namlier\UnitTesting\User\Authentication\Application\AuthenticationService;
@@ -14,7 +15,8 @@ class AuthenticationServiceTest extends TestCase
     public function testRegisterDoesntStoreUsersPlainPassword(): void
     {
         $userRepositoryMock = $this->createMock(UserRepository::class);
-        $sut = new AuthenticationService($userRepositoryMock);
+        $passwordHasherStub = $this->createStub(PasswordHasherInterface::class);
+        $sut = new AuthenticationService($userRepositoryMock, $passwordHasherStub);
 
         $userRepositoryMock->method('save')
             ->with($this->callback([self::class, 'assertPlainPasswordIsNotGoingToBeStoredInRepository']));
