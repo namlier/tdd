@@ -1,16 +1,16 @@
-PHPUNIT := ./vendor/bin/phpunit
+PHPUNIT := ./tools/phpunit
 
 # phpunit Unit tests
 .PHONY: test-unit
 test-unit:
-	$(PHPUNIT) -c phpunit.unit.xml --testdox
+	php8.4 $(PHPUNIT) -c phpunit.unit.xml --testdox
 
 # phpunit Integration tests
 .PHONY: test-integration
 test-integration:
 	$(MAKE) delete-integration-database
 	$(MAKE) create-integration-database
-	$(PHPUNIT) -c phpunit.integration.xml --testdox
+	php8.4 $(PHPUNIT) -c phpunit.integration.xml --testdox
 
 .PHONY: test-coverage-merge
 test-coverage-merge:
